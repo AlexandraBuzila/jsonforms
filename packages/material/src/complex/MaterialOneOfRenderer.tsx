@@ -88,7 +88,8 @@ class MaterialOneOfRenderer extends React.Component<CombinatorRendererProps, Mat
     const { path, schema, handleChange } = this.props;
     handleChange(
       path,
-      createDefaultValue(schema.oneOf[this.state.newOneOfIndex])
+      createDefaultValue(schema.oneOf[this.state.newOneOfIndex]), 
+      schema
     );
     this.setState({
       open: false,

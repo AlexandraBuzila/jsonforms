@@ -34,7 +34,7 @@ import {
   mapDispatchToControlProps,
   mapStateToControlProps,
   RankedTester,
-  rankWith,
+  rankWith
 } from '@jsonforms/core';
 import { Control } from '@jsonforms/react';
 import moment from 'moment';
@@ -47,13 +47,17 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 
-export class MaterialDateTimeControl extends Control<ControlProps, ControlState> {
+export class MaterialDateTimeControl extends Control<
+  ControlProps,
+  ControlState
+> {
   render() {
     const {
       id,
       description,
       errors,
       label,
+      schema,
       uischema,
       visible,
       enabled,
@@ -77,18 +81,32 @@ export class MaterialDateTimeControl extends Control<ControlProps, ControlState>
           <DateTimePicker
             keyboard
             id={id + '-input'}
-            label={computeLabel(isPlainLabel(label) ? label : label.default, required)}
+            label={computeLabel(
+              isPlainLabel(label) ? label : label.default,
+              required
+            )}
             error={!isValid}
             fullWidth={!trim}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
             helperText={!isValid ? errors : description}
-            InputLabelProps={{ shrink: true, }}
+            InputLabelProps={{ shrink: true }}
             value={data || null}
-            onChange={datetime => handleChange(path, datetime ? moment(datetime).format() : '')}
+            onChange={datetime =>
+              handleChange(
+                path,
+                datetime ? moment(datetime).format() : '',
+                schema
+              )
+            }
             onInputChange={ev =>
-              handleChange(path, getValue(ev) ? moment(getValue(ev)).format() : '')}
-            format='MM/DD/YYYY h:mm a'
+              handleChange(
+                path,
+                getValue(ev) ? moment(getValue(ev)).format() : '',
+                schema
+              )
+            }
+            format="MM/DD/YYYY h:mm a"
             clearable={true}
             disabled={!enabled}
             autoFocus={uischema.options && uischema.options.focus}
@@ -97,7 +115,13 @@ export class MaterialDateTimeControl extends Control<ControlProps, ControlState>
             dateRangeIcon={<DateRangeIcon />}
             keyboardIcon={<EventIcon />}
             timeIcon={<AccessTimeIcon />}
-            onClear={() => handleChange(path, '')}
+            onClear={() => {
+              if (schema.default === undefined) {
+                handleChange(path, '', schema);
+              } else {
+                handleChange(path, undefined, schema);
+              }
+            }}
             InputProps={inputProps}
           />
         </MuiPickersUtilsProvider>
@@ -105,7 +129,11 @@ export class MaterialDateTimeControl extends Control<ControlProps, ControlState>
     );
   }
 }
-export const materialDateTimeControlTester: RankedTester = rankWith(2, isDateTimeControl);
+export const materialDateTimeControlTester: RankedTester = rankWith(
+  2,
+  isDateTimeControl
+);
 export default connect(
-  mapStateToControlProps, mapDispatchToControlProps
+  mapStateToControlProps,
+  mapDispatchToControlProps
 )(MaterialDateTimeControl);

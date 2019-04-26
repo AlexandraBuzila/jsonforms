@@ -37,7 +37,7 @@ import { VanillaRendererProps } from '../index';
 import { addVanillaCellProps } from '../util';
 
 export const DateTimeCell = (props: CellProps & VanillaRendererProps) => {
-    const { data, className, id, enabled, uischema, path, handleChange } = props;
+    const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
     const toISOString = (inputDateTime: string) => {
         return (inputDateTime === '' ? '' : inputDateTime + ':00.000Z');
     };
@@ -47,7 +47,7 @@ export const DateTimeCell = (props: CellProps & VanillaRendererProps) => {
         type='datetime-local'
         value={(data || '').substr(0, 16)}
         onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-          handleChange(path, toISOString(ev.currentTarget.value))
+          handleChange(path, toISOString(ev.currentTarget.value), schema)
         }
         className={className}
         id={id}

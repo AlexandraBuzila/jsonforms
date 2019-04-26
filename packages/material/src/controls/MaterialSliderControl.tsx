@@ -103,7 +103,7 @@ export class MaterialSliderControl extends Control<ControlProps, ControlState> {
             max={schema.maximum}
             value={Number(data || schema.default)}
             onChange={(_ev, value) => {
-              handleChange(path, Number(value));
+              handleChange(path, Number(value), schema);
             }
             }
             id={id + '-input'}

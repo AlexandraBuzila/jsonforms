@@ -184,7 +184,7 @@ const mapStateToProps = (state: JsonFormsState, ownProps: any) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-    add(path: string, prop: Property, newData: any) {
+    add(path: string, prop: Property, newData: any, schema: JsonSchema)  {
         dispatch(
             update(
                 Paths.compose(path, prop.property),
@@ -195,7 +195,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
                     array.push(newData);
 
                     return array;
-                }
+                },
+                schema
             )
         );
     }

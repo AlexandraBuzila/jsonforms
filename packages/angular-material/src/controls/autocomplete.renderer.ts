@@ -125,7 +125,7 @@ export class AutocompleteControlRenderer extends JsonFormsControl {
   onSelect(ev: MatAutocompleteSelectedEvent) {
     const path = composeWithUi(this.uischema as ControlElement, this.path);
     this.shouldFilter = false;
-    this.ngRedux.dispatch(Actions.update(path, () => ev.option.value));
+    this.ngRedux.dispatch(Actions.update(path, () => ev.option.value, this.schema));
     this.triggerValidation();
   }
 

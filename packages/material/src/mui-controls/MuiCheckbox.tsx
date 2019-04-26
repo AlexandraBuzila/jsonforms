@@ -23,24 +23,43 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-    CellProps,
-    WithClassname
-} from '@jsonforms/core';
+import { CellProps, WithClassname } from '@jsonforms/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import Close from '@material-ui/icons/Close';
+import { Hidden } from '@material-ui/core';
 
 export const MuiCheckbox = (props: CellProps & WithClassname) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
-  const config = {'autoFocus': uischema.options && uischema.options.focus};
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    schema,
+    uischema,
+    path,
+    handleChange
+  } = props;
+  const config = { autoFocus: uischema.options && uischema.options.focus };
 
   return (
-    <Checkbox
-      checked={data || ''}
-      onChange={(_ev, checked) => handleChange(path, checked)}
-      className={className}
-      id={id}
-      disabled={!enabled}
-      inputProps={config}
-    />
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <Checkbox
+        checked={data || ''}
+        onChange={(_ev, checked) => handleChange(path, checked, schema)}
+        className={className}
+        id={id}
+        disabled={!enabled}
+        inputProps={config}
+      />
+      <Hidden xsUp={schema.default === undefined}>
+        <IconButton
+          aria-label="Clear input field"
+          onClick={() => handleChange(path, undefined, schema)}
+        >
+          <Close />
+        </IconButton>
+      </Hidden>
+    </div>
   );
 };

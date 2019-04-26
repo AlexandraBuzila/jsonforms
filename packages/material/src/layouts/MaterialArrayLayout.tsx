@@ -62,7 +62,10 @@ const iconStyle: any = { float: 'right' };
 interface MaterialArrayLayoutState {
   expanded: string | boolean;
 }
-export class MaterialArrayLayout extends React.Component<ArrayLayoutProps, MaterialArrayLayoutState> {
+export class MaterialArrayLayout extends React.Component<
+  ArrayLayoutProps,
+  MaterialArrayLayoutState
+> {
   state: MaterialArrayLayoutState = {
     expanded: null
   };
@@ -90,9 +93,13 @@ export class MaterialArrayLayout extends React.Component<ArrayLayoutProps, Mater
     return (
       <Paper style={paperStyle}>
         <ArrayLayoutToolbar
-          label={computeLabel(isPlainLabel(label) ? label : label.default, required)}
+          label={computeLabel(
+            isPlainLabel(label) ? label : label.default,
+            required
+          )}
           errors={errors}
           path={path}
+          schema={schema}
           addItem={addItem}
           createDefault={this.innerCreateDefaultValue}
         />
@@ -151,7 +158,7 @@ class ExpandPanelRenderer extends React.Component<ExpandPanelProps, any> {
             <Grid item xs={11}>
               <Grid container alignItems={'center'}>
                 <Grid item xs={1}>
-                  <Avatar aria-label='Index'>{index + 1}</Avatar>
+                  <Avatar aria-label="Index">{index + 1}</Avatar>
                 </Grid>
                 <Grid item xs={2}>
                   {childLabel}
@@ -162,7 +169,7 @@ class ExpandPanelRenderer extends React.Component<ExpandPanelProps, any> {
               <Grid container justify={'flex-end'}>
                 <Grid item>
                   <IconButton
-                    onClick={removeItems(path, [index])}
+                    onClick={removeItems(path, [index], schema)}
                     style={iconStyle}
                   >
                     <DeleteIcon />
@@ -237,7 +244,11 @@ export const mapStateToExpandPanelProps = (
  * Dispatch props of a table control
  */
 export interface DispatchPropsOfExpandPanel {
-  removeItems(path: string, toDelete: number[]): () => void;
+  removeItems(
+    path: string,
+    toDelete: number[],
+    schema?: JsonSchema
+  ): () => void;
 }
 
 /**
@@ -246,16 +257,26 @@ export interface DispatchPropsOfExpandPanel {
  * @param dispatch the store's dispatch method
  * @returns {DispatchPropsOfArrayControl} dispatch props of an expand panel control
  */
-export const mapDispatchToExpandPanelProps: (dispatch: Dispatch<AnyAction>) => DispatchPropsOfExpandPanel = dispatch => ({
-  removeItems: (path: string, toDelete: number[]) => (): void => {
+export const mapDispatchToExpandPanelProps: (
+  dispatch: Dispatch<AnyAction>
+) => DispatchPropsOfExpandPanel = dispatch => ({
+  removeItems: (
+    path: string,
+    toDelete: number[],
+    schema?: JsonSchema
+  ) => (): void => {
     dispatch(
-      update(path, array => {
-        toDelete
-          .sort()
-          .reverse()
-          .forEach(s => array.splice(s, 1));
-        return array;
-      })
+      update(
+        path,
+        array => {
+          toDelete
+            .sort()
+            .reverse()
+            .forEach(s => array.splice(s, 1));
+          return array;
+        },
+        schema
+      )
     );
   }
 });

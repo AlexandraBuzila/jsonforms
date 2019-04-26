@@ -302,7 +302,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>, ownProps: any) => {
             const clonedArray = clone(array);
             clonedArray.splice(index, 1);
             return clonedArray;
-          }
+          },
+          ownProps.schema
         )
       );
     },

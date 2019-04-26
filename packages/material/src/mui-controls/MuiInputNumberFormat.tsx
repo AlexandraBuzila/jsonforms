@@ -23,14 +23,16 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-    CellProps,
-    Formatted,
-    WithClassname,
-} from '@jsonforms/core';
+import { CellProps, Formatted, WithClassname } from '@jsonforms/core';
 import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import Close from '@material-ui/icons/Close';
+import { Hidden } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
-export const MuiInputNumberFormat = (props: CellProps & WithClassname & Formatted<number>) => {
+export const MuiInputNumberFormat = (
+  props: CellProps & WithClassname & Formatted<number>
+) => {
   const {
     className,
     id,
@@ -44,7 +46,7 @@ export const MuiInputNumberFormat = (props: CellProps & WithClassname & Formatte
   const maxLength = schema.maxLength;
   let config;
   if (uischema.options && uischema.options.restrict) {
-    config = {'maxLength': maxLength};
+    config = { maxLength: maxLength };
   } else {
     config = {};
   }
@@ -53,12 +55,12 @@ export const MuiInputNumberFormat = (props: CellProps & WithClassname & Formatte
 
   const onChange = (ev: any) => {
     const validStringNumber = props.fromFormatted(ev.currentTarget.value);
-    handleChange(path, validStringNumber);
+    handleChange(path, validStringNumber, schema);
   };
 
   return (
     <Input
-      type='text'
+      type="text"
       value={formattedNumber}
       onChange={onChange}
       className={className}
@@ -69,6 +71,18 @@ export const MuiInputNumberFormat = (props: CellProps & WithClassname & Formatte
       fullWidth={!trim || maxLength === undefined}
       inputProps={config}
       error={!isValid}
+      endAdornment={
+        <InputAdornment position="end">
+          <Hidden xsUp={schema.default === undefined}>
+            <IconButton
+              aria-label="Clear input field"
+              onClick={() => handleChange(path, undefined, schema)}
+            >
+              <Close />
+            </IconButton>
+          </Hidden>
+        </InputAdornment>
+      }
     />
   );
 };

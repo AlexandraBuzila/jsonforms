@@ -33,6 +33,7 @@ import {
   createDefaultValue,
   findUISchema,
   JsonFormsState,
+  JsonSchema,
   mapDispatchToArrayControlProps,
   mapStateToArrayControlProps,
   RankedTester,
@@ -134,8 +135,8 @@ export class MasterListComponent extends JsonFormsArrayControl {
   masterItems: any[];
   selectedItem: any;
   selectedItemIdx: number;
-  addItem: (path: string, value: any) => () => void;
-  removeItems: (path: string, toDelete: number[]) => () => void;
+  addItem: (path: string, value: any, schema?: JsonSchema) => () => void;
+  removeItems: (path: string, toDelete: number[], schema?: JsonSchema) => () => void;
   propsPath: string;
   highlightedIdx: number;
 
@@ -228,11 +229,11 @@ export class MasterListComponent extends JsonFormsArrayControl {
   }
 
   onAddClick() {
-    this.addItem(this.propsPath, createDefaultValue(this.scopedSchema))();
+    this.addItem(this.propsPath, createDefaultValue(this.scopedSchema), this.schema)();
   }
 
   onDeleteClick(item: number) {
-    this.removeItems(this.propsPath, [item])();
+    this.removeItems(this.propsPath, [item], this.schema)();
   }
 
   protected mapToProps(state: JsonFormsState): ArrayControlProps {

@@ -46,7 +46,7 @@ export const SliderCell = (props: CellProps & VanillaRendererProps) => {
       min={schema.minimum}
       value={data || schema.default}
       onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-        handleChange(path, Number(ev.currentTarget.value))
+        handleChange(path, Number(ev.currentTarget.value), schema)
       }
       className={className}
       id={id}

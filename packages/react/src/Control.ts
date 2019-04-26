@@ -70,6 +70,6 @@ export class Control<
   };
 
   private updateData = (value: any) => {
-    this.props.handleChange(this.props.path, value);
+    this.props.handleChange(this.props.path, value, this.props.schema);
   };
 }

@@ -61,7 +61,7 @@ export class MaterialNativeControl extends Control<ControlProps, ControlState> {
     const isValid = errors.length === 0;
     const mergedConfig = merge({}, config, this.props.uischema.options);
     const trim = mergedConfig.trim;
-    const onChange = (ev: any) => handleChange(path, ev.target.value);
+    const onChange = (ev: any) => handleChange(path, ev.target.value, schema);
     const fieldType = schema.format;
     const showDescription = !isDescriptionHidden(visible, description, this.state.isFocused);
 

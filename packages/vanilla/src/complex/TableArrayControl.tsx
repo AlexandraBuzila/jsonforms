@@ -106,7 +106,7 @@ class TableArrayControl extends React.Component<
           <label className={labelClass}>{labelText}</label>
           <button
             className={buttonClass}
-            onClick={addItem(path, createDefaultValue(schema))}
+            onClick={addItem(path, createDefaultValue(schema), schema)}
           >
             Add to {labelObject.text}
           </button>

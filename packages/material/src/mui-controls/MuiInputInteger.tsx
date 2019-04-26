@@ -23,27 +23,49 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-    CellProps,
-    WithClassname
-} from '@jsonforms/core';
+import { CellProps, WithClassname } from '@jsonforms/core';
 import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import Close from '@material-ui/icons/Close';
+import { Hidden } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 export const MuiInputInteger = (props: CellProps & WithClassname) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
-  const config = {'step': '1'};
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    schema,
+    uischema,
+    path,
+    handleChange
+  } = props;
+  const config = { step: '1' };
 
   return (
     <Input
-      type='number'
+      type="number"
       value={data || ''}
-      onChange={ev => handleChange(path, parseInt(ev.target.value, 10))}
+      onChange={ev => handleChange(path, parseInt(ev.target.value, 10), schema)}
       className={className}
       id={id}
       disabled={!enabled}
       autoFocus={uischema.options && uischema.options.focus}
       inputProps={config}
       fullWidth={true}
+      endAdornment={
+        <InputAdornment position="end">
+          <Hidden xsUp={schema.default === undefined}>
+            <IconButton
+              aria-label="Clear input field"
+              onClick={() => handleChange(path, undefined, schema)}
+            >
+              <Close />
+            </IconButton>
+          </Hidden>
+        </InputAdornment>
+      }
     />
   );
 };

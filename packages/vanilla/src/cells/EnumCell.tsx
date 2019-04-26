@@ -37,7 +37,7 @@ import { addVanillaCellProps } from '../util';
 import { WithClassname } from '../index';
 
 export const EnumCell = (props: EnumCellProps & WithClassname) => {
-  const { data, className, id, enabled, uischema, path, handleChange, options } = props;
+  const { data, className, id, enabled, uischema, schema, path, handleChange, options } = props;
 
   return (
     <select
@@ -47,7 +47,7 @@ export const EnumCell = (props: EnumCellProps & WithClassname) => {
       autoFocus={uischema.options && uischema.options.focus}
       value={data || ''}
       onChange={(ev: SyntheticEvent<HTMLSelectElement>) =>
-        handleChange(path, ev.currentTarget.value)
+        handleChange(path, ev.currentTarget.value, schema)
       }
     >
       {

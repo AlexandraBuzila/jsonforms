@@ -72,9 +72,9 @@ export class MaterialListWithDetailRenderer extends React.Component<
   state: MaterialListWithDetailRendererState = {
     selectedIndex: undefined
   };
-  addItem = (path: string, value: any) => this.props.addItem(path, value);
-  removeItem = (path: string, value: number) => () => {
-    this.props.removeItems(path, [value])();
+  addItem = (path: string, value: any, schema?: JsonSchema) => this.props.addItem(path, value, schema);
+  removeItem = (schema: JsonSchema, path: string, value: number) => () => {
+    this.props.removeItems(path, [value], schema)();
     if (this.state.selectedIndex === value) {
       this.state.selectedIndex = undefined;
     } else if (this.state.selectedIndex > value) {
@@ -92,6 +92,7 @@ export class MaterialListWithDetailRenderer extends React.Component<
         <ArrayLayoutToolbar
           label={computeLabel(isPlainLabel(label) ? label : label.default, required)}
           errors={errors}
+          schema={schema}
           path={path}
           addItem={this.addItem}
           createDefault={this.createDefaultValue}
@@ -165,7 +166,7 @@ interface OwnPropsOfMasterListItem {
   path: string;
   schema: JsonSchema;
   handleSelect(index: number): () => void;
-  removeItem(path: string, value: number): () => void;
+  removeItem(schema: JsonSchema, path: string, value: number): () => void;
 }
 interface StatePropsOfMasterItem extends OwnPropsOfMasterListItem {
   childLabel: string;
@@ -175,7 +176,7 @@ class ListWithDetailMasterItem extends React.Component<
   any
 > {
   render() {
-    const {selected, handleSelect, index, childLabel, removeItem, path} = this.props;
+    const {selected, handleSelect, index, childLabel, removeItem, schema, path} = this.props;
     return (
       <ListItem
         button
@@ -189,7 +190,7 @@ class ListWithDetailMasterItem extends React.Component<
         <ListItemSecondaryAction>
           <IconButton
             aria-label='Delete'
-            onClick={removeItem(path, index)}
+            onClick={removeItem(schema, path, index)}
           >
             <DeleteIcon />
           </IconButton>

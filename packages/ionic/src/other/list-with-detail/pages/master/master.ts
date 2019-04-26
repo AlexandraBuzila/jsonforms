@@ -61,7 +61,7 @@ export class MasterPage extends AbstractMasterPage implements OnInit {
   uischema: ControlElement;
   schema: JsonSchema;
   path: string;
-  addItem: (path: string, value: any) => () => void;
+  addItem: (path: string, value: any, schema?: JsonSchema) => () => void;
   pushDetail: (params: any) => void;
 
   constructor(
@@ -86,6 +86,6 @@ export class MasterPage extends AbstractMasterPage implements OnInit {
   }
 
   onClick() {
-    this.addItem(this.path, createDefaultValue(this.schema))();
+    this.addItem(this.path, createDefaultValue(this.schema), this.schema)();
   }
 }

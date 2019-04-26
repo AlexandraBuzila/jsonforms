@@ -40,7 +40,7 @@ export interface MaterialTableToolbarProps {
     uischema: ControlElement;
     schema: JsonSchema;
     rootSchema: JsonSchema;
-    addItem(path: string, value: any): () => void;
+    addItem(path: string, value: any, schema?: JsonSchema): () => void;
 }
 
 const TableToolbar = React.memo((
@@ -77,7 +77,7 @@ const TableToolbar = React.memo((
             >
                 <IconButton
                     aria-label={`Add to ${label}`}
-                    onClick={addItem(path, createDefaultValue(schema))}
+                    onClick={addItem(path, createDefaultValue(schema), schema)}
                 >
                     <AddIcon/>
                 </IconButton>

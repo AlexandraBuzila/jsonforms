@@ -36,7 +36,7 @@ import {
 import { VanillaRendererProps } from '../index';
 
 export const NumberCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+  const { data, className, id, enabled, schema,  uischema, path, handleChange } = props;
 
   return (
     <input
@@ -44,7 +44,7 @@ export const NumberCell = (props: CellProps & VanillaRendererProps) => {
       step='0.1'
       value={data || ''}
       onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-        handleChange(path, Number(ev.currentTarget.value))
+        handleChange(path, Number(ev.currentTarget.value), schema)
       }
       className={className}
       id={id}

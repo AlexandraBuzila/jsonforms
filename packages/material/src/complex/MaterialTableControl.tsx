@@ -267,7 +267,7 @@ export class MaterialTableControl extends React.Component<
 ArrayLayoutProps & WithDeleteDialogSupport,
   any
 > {
-  addItem = (path: string, value: any) => this.props.addItem(path, value);
+  addItem = (path: string, value: any, schema: JsonSchema) => this.props.addItem(path, value, schema);
   render() {
     const {
       label,

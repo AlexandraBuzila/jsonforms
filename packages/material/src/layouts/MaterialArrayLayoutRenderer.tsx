@@ -27,6 +27,7 @@ import React from 'react';
 import {
   ArrayLayoutProps,
   isObjectArrayWithNesting,
+  JsonSchema,
   mapDispatchToArrayControlProps,
   mapStateToArrayLayoutProps,
   RankedTester,
@@ -37,7 +38,7 @@ import { connect } from 'react-redux';
 import { Hidden } from '@material-ui/core';
 
 export class MaterialArrayLayoutRenderer extends React.Component<ArrayLayoutProps, any> {
-  addItem = (path: string, value: any) => this.props.addItem(path, value);
+  addItem = (path: string, value: any, schema: JsonSchema) => this.props.addItem(path, value, schema);
   render() {
     return (
       <Hidden xsUp={!this.props.visible}>

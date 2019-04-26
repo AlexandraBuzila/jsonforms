@@ -36,13 +36,13 @@ import {
 import Input from '@material-ui/core/Input';
 
 export const MaterialDateCell = (props: CellProps & WithClassname) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+  const { data, className, id, enabled, schema, uischema, path, handleChange } = props;
 
   return (
     <Input
       type='date'
       value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
+      onChange={ev => handleChange(path, ev.target.value, schema)}
       className={className}
       id={id}
       disabled={!enabled}

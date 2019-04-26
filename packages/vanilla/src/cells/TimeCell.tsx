@@ -36,14 +36,14 @@ import { SyntheticEvent } from 'react';
 import { VanillaRendererProps } from '../index';
 
 export const TimeCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+  const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
 
   return (
     <input
       type='time'
       value={data || ''}
       onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-        handleChange(path, ev.currentTarget.value)
+        handleChange(path, ev.currentTarget.value, schema)
       }
       className={className}
       id={id}

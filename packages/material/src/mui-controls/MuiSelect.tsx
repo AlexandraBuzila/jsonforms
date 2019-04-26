@@ -23,16 +23,26 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-    EnumCellProps,
-    WithClassname,
-} from '@jsonforms/core';
+import { EnumCellProps, WithClassname } from '@jsonforms/core';
 
 import Select from '@material-ui/core/Select';
-import { MenuItem } from '@material-ui/core';
+import { Hidden, MenuItem } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Close from '@material-ui/icons/Close';
 
 export const MuiSelect = (props: EnumCellProps & WithClassname) => {
-  const { data, className, id, enabled, uischema, path, handleChange, options } = props;
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    schema,
+    uischema,
+    path,
+    handleChange,
+    options
+  } = props;
 
   return (
     <Select
@@ -41,20 +51,28 @@ export const MuiSelect = (props: EnumCellProps & WithClassname) => {
       disabled={!enabled}
       autoFocus={uischema.options && uischema.options.focus}
       value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
+      onChange={ev => handleChange(path, ev.target.value, schema)}
       fullWidth={true}
+      endAdornment={
+        <InputAdornment position="end">
+          <Hidden xsUp={schema.default === undefined}>
+            <IconButton
+              aria-label="Clear input field"
+              onClick={() => handleChange(path, undefined, schema)}
+            >
+              <Close />
+            </IconButton>
+          </Hidden>
+        </InputAdornment>
+      }
     >
-      {
-        [<MenuItem value='' key={'empty'} />]
-          .concat(
-            options.map(optionValue =>
-              (
-                <MenuItem value={optionValue} key={optionValue}>
-                  {optionValue}
-                </MenuItem>
-              )
-            )
-          )}
+      {[<MenuItem value="" key={'empty'} />].concat(
+        options.map(optionValue => (
+          <MenuItem value={optionValue} key={optionValue}>
+            {optionValue}
+          </MenuItem>
+        ))
+      )}
     </Select>
   );
 };

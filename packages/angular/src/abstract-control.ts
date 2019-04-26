@@ -81,7 +81,7 @@ export abstract class JsonFormsAbstractControl<
 
   onChange(ev: any) {
     const path = composeWithUi(this.uischema, this.path);
-    this.ngRedux.dispatch(Actions.update(path, () => this.getEventValue(ev)));
+    this.ngRedux.dispatch(Actions.update(path, () => this.getEventValue(ev), this.schema));
     this.triggerValidation();
   }
 

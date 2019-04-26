@@ -439,7 +439,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchPropsOfTreeW
               clonedData.push({});
 
               return clonedData;
-            }
+            },
+            schema
           )
         );
       }

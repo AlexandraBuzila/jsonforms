@@ -23,12 +23,13 @@
   THE SOFTWARE.
 */
 import React from 'react';
-import {
-  CellProps,
-  WithClassname
-} from '@jsonforms/core';
+import { CellProps, WithClassname } from '@jsonforms/core';
 import Input from '@material-ui/core/Input';
 import merge from 'lodash/merge';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Close from '@material-ui/icons/Close';
+import { Hidden } from '@material-ui/core';
 
 export const MuiInputText = (props: CellProps & WithClassname) => {
   const {
@@ -47,18 +48,22 @@ export const MuiInputText = (props: CellProps & WithClassname) => {
   const mergedConfig = merge({}, config, uischema.options);
   let inputProps: any;
   if (mergedConfig.restrict) {
-    inputProps = {'maxLength': maxLength};
+    inputProps = { maxLength: maxLength };
   } else {
     inputProps = {};
   }
   if (mergedConfig.trim && maxLength !== undefined) {
     inputProps.size = maxLength;
   }
-  const onChange = (ev: any) => handleChange(path, ev.target.value);
+  const onChange = (ev: any) => handleChange(path, ev.target.value, schema);
 
   return (
     <Input
-      type={uischema.options && (uischema.options.format === 'password') ? 'password' : 'text'}
+      type={
+        uischema.options && uischema.options.format === 'password'
+          ? 'password'
+          : 'text'
+      }
       value={data || ''}
       onChange={onChange}
       className={className}
@@ -69,6 +74,18 @@ export const MuiInputText = (props: CellProps & WithClassname) => {
       fullWidth={!mergedConfig.trim || maxLength === undefined}
       inputProps={inputProps}
       error={!isValid}
+      endAdornment={
+        <InputAdornment position="end">
+          <Hidden xsUp={schema.default === undefined}>
+            <IconButton
+              aria-label="Clear input field"
+              onClick={() => handleChange(path, undefined, schema)}
+            >
+              <Close />
+            </IconButton>
+          </Hidden>
+        </InputAdornment>
+      }
     />
   );
 };

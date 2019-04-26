@@ -296,8 +296,9 @@ export interface DispatchPropsOfControl {
    *
    * @param {string} path the path to the data to be updated
    * @param {any} value the new value that should be written to the given path
+   * @param {JsonSchema} the JSON schema that describes the data
    */
-  handleChange(path: string, value: any): void;
+  handleChange(path: string, value: any, schema?: JsonSchema): void;
 }
 
 /**
@@ -398,8 +399,8 @@ export const mapStateToControlProps = (
 export const mapDispatchToControlProps = (
   dispatch: Dispatch<AnyAction>
 ): DispatchPropsOfControl => ({
-  handleChange(path, value) {
-    dispatch(update(path, () => value));
+  handleChange(path, value, schema) {
+    dispatch(update(path, () => value, schema));
   }
 });
 
@@ -494,8 +495,8 @@ export const mapStateToArrayControlProps = (
  * Dispatch props of a table control
  */
 export interface DispatchPropsOfArrayControl {
-  addItem(path: string, value: any): () => void;
-  removeItems?(path: string, toDelete: number[]): () => void;
+  addItem(path: string, value: any, schema?: JsonSchema): () => void;
+  removeItems?(path: string, toDelete: number[], schema?: JsonSchema): () => void;
 }
 
 /**
@@ -507,7 +508,7 @@ export interface DispatchPropsOfArrayControl {
 export const mapDispatchToArrayControlProps = (
   dispatch: Dispatch<AnyAction>
 ): DispatchPropsOfArrayControl => ({
-  addItem: (path: string, value: any) => () => {
+  addItem: (path: string, value: any, schema?: JsonSchema) => () => {
     dispatch(
       update(path, array => {
         if (array === undefined || array === null) {
@@ -516,10 +517,10 @@ export const mapDispatchToArrayControlProps = (
 
         array.push(value);
         return array;
-      })
+      }, schema)
     );
   },
-  removeItems: (path: string, toDelete: number[]) => () => {
+  removeItems: (path: string, toDelete: number[], schema?: JsonSchema) => () => {
     dispatch(
       update(path, array => {
         toDelete
@@ -527,7 +528,8 @@ export const mapDispatchToArrayControlProps = (
           .reverse()
           .forEach(s => array.splice(s, 1));
         return array;
-      })
+      },
+      schema)
     );
   }
 });

@@ -56,7 +56,7 @@ export class MaterialArrayControlRenderer extends RendererComponent<ArrayLayoutP
   deleteCancel = () => this.setState({open: false});
   deleteConfirm = () => {
     const path = this.state.path.substring(0, this.state.path.lastIndexOf(('.')));
-    this.props.removeItems(path, [this.state.rowData])();
+    this.props.removeItems( path, [this.state.rowData], this.props.schema)();
     this.setState({open: false});
   };
   deleteClose = () => this.setState({open: false});

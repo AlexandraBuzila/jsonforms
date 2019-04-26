@@ -36,13 +36,13 @@ import {
 import { VanillaRendererProps } from '../index';
 
 export const TextAreaCell = (props: CellProps & VanillaRendererProps) => {
-  const { data, className, id, enabled, uischema, path, handleChange } = props;
+  const { data, className, id, enabled, uischema, schema,  path, handleChange } = props;
 
   return (
     <textarea
       value={data || ''}
       onChange={(ev: SyntheticEvent<HTMLTextAreaElement>) =>
-        handleChange(path, ev.currentTarget.value)
+        handleChange(path, ev.currentTarget.value, schema)
       }
       className={className}
       id={id}

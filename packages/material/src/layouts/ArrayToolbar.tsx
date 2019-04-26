@@ -5,11 +5,13 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
 import ValidationIcon from '../complex/ValidationIcon';
+import { JsonSchema } from '@jsonforms/core';
 export interface ArrayLayoutToolbarProps {
   label: string;
   errors: string;
   path: string;
-  addItem(path: string, data: any): () => void;
+  schema: JsonSchema;
+  addItem(path: string, data: any, schema?: JsonSchema): () => void;
   createDefault(): any;
 }
 export const ArrayLayoutToolbar = React.memo(
@@ -17,6 +19,7 @@ export const ArrayLayoutToolbar = React.memo(
     label,
     errors,
     addItem,
+    schema,
     path,
     createDefault
   }: ArrayLayoutToolbarProps) => {
@@ -41,7 +44,7 @@ export const ArrayLayoutToolbar = React.memo(
                 >
                   <IconButton
                     aria-label={`Add to ${label}`}
-                    onClick={addItem(path, createDefault())}
+                    onClick={addItem(path, createDefault(), schema)}
                   >
                     <AddIcon />
                   </IconButton>

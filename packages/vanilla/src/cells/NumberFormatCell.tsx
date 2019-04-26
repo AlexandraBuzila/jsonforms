@@ -50,7 +50,7 @@ export const NumberFormatCell = (props: CellProps & VanillaRendererProps & Forma
 
   const onChange = (ev: any) => {
     const validStringNumber = props.fromFormatted(ev.currentTarget.value);
-    handleChange(path, validStringNumber);
+    handleChange(path, validStringNumber, schema);
   };
 
   return (

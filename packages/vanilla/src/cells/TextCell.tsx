@@ -55,7 +55,7 @@ export const TextCell = (props: CellProps & VanillaRendererProps) => {
       type='text'
       value={data || ''}
       onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-        handleChange(path, ev.currentTarget.value)
+        handleChange(path, ev.currentTarget.value, schema)
       }
       className={className}
       id={id}

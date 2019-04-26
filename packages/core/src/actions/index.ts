@@ -56,6 +56,7 @@ export const REMOVE_DEFAULT_DATA: 'jsonforms/REMOVE_DEFAULT_DATA' = `jsonforms/R
 
 export interface UpdateAction {
   type: 'jsonforms/UPDATE';
+  schema: JsonSchema;
   path: string;
   updater(existingData?: any): any;
 }
@@ -120,9 +121,11 @@ export const setAjv = (ajv: AJV.Ajv) => ({
 
 export const update = (
   path: string,
-  updater: (existingData: any) => any
+  updater: (existingData: any) => any,
+  schema?: JsonSchema
 ): UpdateAction => ({
   type: UPDATE_DATA,
+  schema,
   path,
   updater
 });

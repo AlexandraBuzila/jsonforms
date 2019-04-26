@@ -38,14 +38,14 @@ import { VanillaRendererProps } from '../index';
 
 export const BooleanCell: StatelessComponent<CellProps> =
     (props: CellProps & VanillaRendererProps) => {
-        const { data, className, id, enabled, uischema, path, handleChange } = props;
+        const { data, className, id, enabled, uischema, schema, path, handleChange } = props;
 
         return (
             <input
                 type='checkbox'
                 checked={data || ''}
                 onChange={(ev: SyntheticEvent<HTMLInputElement>) =>
-                    handleChange(path, ev.currentTarget.checked)
+                    handleChange(path, ev.currentTarget.checked, schema)
                 }
                 className={className}
                 id={id}
