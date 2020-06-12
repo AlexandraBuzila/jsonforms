@@ -141,6 +141,7 @@ export const JsonFormsStateProvider = ({ children, initState }: any) => {
         renderers: initState.renderers,
         cells: initState.cells,
         config: config,
+        uischemas: initState.uischemas,
         // only core dispatch available
         dispatch: coreDispatch,
       }}

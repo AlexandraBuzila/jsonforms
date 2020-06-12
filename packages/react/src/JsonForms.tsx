@@ -38,6 +38,7 @@ import {
   JsonFormsCore,
   JsonFormsProps,
   JsonFormsRendererRegistryEntry,
+  JsonFormsUISchemaRegistryEntry,
   JsonSchema,
   OwnPropsOfJsonFormsRenderer,
   removeId,
@@ -219,6 +220,7 @@ export interface JsonFormsInitStateProps {
   ajv?: AJV.Ajv;
   refParserOptions?: RefParser.Options;
   config?: any;
+  uischemas?: JsonFormsUISchemaRegistryEntry[];
 }
 
 export const JsonForms = (
@@ -234,6 +236,7 @@ export const JsonForms = (
     refParserOptions,
     onChange,
     config,
+    uischemas,
   } = props;
   const schemaToUse = schema !== undefined ? schema : Generate.jsonSchema(data);
   const uischemaToUse =
@@ -249,6 +252,7 @@ export const JsonForms = (
           uischema: uischemaToUse
         },
         config,
+        uischemas,
         renderers,
         cells
       }}
