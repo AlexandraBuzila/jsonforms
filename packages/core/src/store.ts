@@ -66,9 +66,13 @@ export interface JsonFormsSubStates {
    */
   i18n?: JsonFormsLocaleState;
   /**
-   *
+   * Ui schema registry, allows to specify detail ui schemas for renderers which support them.
    */
   uischemas?: JsonFormsUISchemaRegistryEntry[];
+  /**
+   * If true, sets all controls to read-only.
+   */
+  readOnly?: boolean;
   // allow additional state
   [additionalState: string]: any;
 }

@@ -40,6 +40,7 @@ import {
   RuleEffect,
   UISchemaElement
 } from '../../src';
+import { enumToEnumOptionMapper } from '../../src/util/renderer';
 
 const middlewares: Redux.Middleware[] = [];
 const mockStore = configureStore<JsonFormsState>(middlewares);
@@ -55,6 +56,15 @@ const hideRule = {
 
 const disableRule = {
   effect: RuleEffect.DISABLE,
+  condition: {
+    type: 'LEAF',
+    scope: '#/properties/firstName',
+    expectedValue: 'Homer'
+  }
+};
+
+const enableRule = {
+  effect: RuleEffect.ENABLE,
   condition: {
     type: 'LEAF',
     scope: '#/properties/firstName',
@@ -194,6 +204,44 @@ test('mapStateToCellProps - enabled via state ', t => {
   t.true(props.enabled);
 });
 
+test('mapStateToCellProps - disabled via global readOnly', t => {
+  const ownProps = {
+    uischema: coreUISchema
+  };
+  const state: JsonFormsState = createState(coreUISchema);
+  state.jsonforms.readOnly = true;
+
+  const props = mapStateToCellProps(state, ownProps);
+  t.false(props.enabled);
+});
+
+test('mapStateToCellProps - disabled via global readOnly beats enabled via ownProps', t => {
+  const ownProps = {
+    uischema: coreUISchema,
+    enabled: true
+  };
+  const state: JsonFormsState = createState(coreUISchema);
+  state.jsonforms.readOnly = true;
+
+  const props = mapStateToCellProps(state, ownProps);
+  t.false(props.enabled);
+});
+
+test('mapStateToCellProps - disabled via global readOnly beats enabled via rule', t => {
+  const uischema = {
+    ...coreUISchema,
+    rule: enableRule
+  };
+  const ownProps = {
+    uischema
+  };
+  const state: JsonFormsState = createState(uischema);
+  state.jsonforms.readOnly = true;
+
+  const props = mapStateToCellProps(state, ownProps);
+  t.false(props.enabled);
+});
+
 test('mapStateToCellProps - path', t => {
   const ownProps = {
     uischema: coreUISchema,
@@ -236,7 +284,7 @@ test('mapStateToEnumCellProps - set default options for dropdown list', t => {
   };
 
   const props = defaultMapStateToEnumCellProps(createState(uischema), ownProps);
-  t.deepEqual(props.options, ['DE', 'IT', 'JP', 'US', 'RU', 'Other']);
+  t.deepEqual(props.options, ['DE', 'IT', 'JP', 'US', 'RU', 'Other'].map(enumToEnumOptionMapper));
   t.is(props.data, undefined);
 });
 

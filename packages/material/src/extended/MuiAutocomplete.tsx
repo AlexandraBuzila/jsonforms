@@ -1,7 +1,7 @@
 /*
   The MIT License
 
-  Copyright (c) 2017-2019 EclipseSource Munich
+  Copyright (c) 2017-2020 EclipseSource Munich
   https://github.com/eclipsesource/jsonforms
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,15 +22,20 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
-import { EnumCellProps, WithClassname } from '@jsonforms/core';
+import React, {ReactNode} from 'react';
+import { EnumCellProps, EnumOption, WithClassname } from '@jsonforms/core';
 
-import Select from '@material-ui/core/Select';
-import { MenuItem } from '@material-ui/core';
+import Input from '@material-ui/core/Input';
+import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
 import { areEqual } from '@jsonforms/react';
 import merge from 'lodash/merge';
 
-export const MuiSelect = React.memo((props: EnumCellProps & WithClassname) => {
+export interface WithOptionLabel {
+    getOptionLabel?(option: EnumOption) : string;
+    renderOption?(option: EnumOption, state: AutocompleteRenderOptionState): ReactNode;
+}
+
+export const MuiAutocomplete = React.memo((props: EnumCellProps & WithClassname & WithOptionLabel) => {
   const {
     data,
     className,
@@ -40,27 +45,38 @@ export const MuiSelect = React.memo((props: EnumCellProps & WithClassname) => {
     path,
     handleChange,
     options,
-    config
+    config,
+    getOptionLabel,
+    renderOption
   } = props;
   const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  const [inputValue, setInputValue] = React.useState(data);
 
+  const findOption = options.find(o => o.value === data);
   return (
-    <Select
+    <Autocomplete
       className={className}
       id={id}
       disabled={!enabled}
-      autoFocus={appliedUiSchemaOptions.focus}
-      value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
-      fullWidth={true}
-    >
-      {[<MenuItem value='' key={'empty'} />].concat(
-        options.map(optionValue => (
-          <MenuItem value={optionValue.value} key={optionValue.value}>
-            {optionValue.label}
-          </MenuItem>
-        ))
+      value={findOption}
+      onChange={(_event: any, newValue: EnumOption | null) => {
+        handleChange(path, newValue?.value);
+      }}
+      inputValue={inputValue}
+      onInputChange={(_event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      autoHighlight
+      autoSelect
+      autoComplete
+      fullWidth
+      options={options}
+      getOptionLabel={getOptionLabel || (option => option?.label)}
+      style={{ marginTop: 16 }}
+      renderInput={params => (
+          <Input style={{ width: '100%' }} type='text' inputProps={params.inputProps} inputRef={params.InputProps.ref} autoFocus={appliedUiSchemaOptions.focus}/>
       )}
-    </Select>
+      renderOption={renderOption}
+    />
   );
 }, areEqual);
