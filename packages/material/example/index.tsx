@@ -22,8 +22,11 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import { renderExample } from '../../example/src/index';
-import { materialCells } from '../src';
-import { extendedMaterialRenderers } from '../src/extended';
+import UISchemasExample from './App';
+import ReactDOM from 'react-dom';
+import React from 'react';
 
-renderExample(extendedMaterialRenderers, materialCells);
+export default ReactDOM.render(
+    <UISchemasExample />,
+  document.getElementById('root')
+);
